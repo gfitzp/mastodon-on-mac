@@ -313,3 +313,5 @@ brew services start supervisor
 ```
 
 Now you should be able to use Ivory or your Mastodon client of choice to connect to your example.com instance, and access it on the web at social.example.com! The only issue I can seem to find at the moment is that when I list another account on my same instance on my profile, if I try to access that other account in my client I get a "User not found" error but I can't figure out if it's something with the API URLs or something with the client or what, as it seems to think the instance should be social.example.com. But other than that, things seem to work well! Hope this helps!
+
+*(README documentation © Glenn Fitzpatrick; code snippets and all other associated files released under the Unlicense license.)*
