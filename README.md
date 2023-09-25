@@ -153,30 +153,24 @@ SMTP_SSL=true
 SMTP_CA_FILE=/opt/homebrew/etc/openssl@3/cert.pem
 ```
 
-I also already had my site running on my main domain and wanted to host Mastodon on a subdomain:
+I already had my site running on my main domain and wanted to host Mastodon on a subdomain:
 
 ```
 WEB_DOMAIN=social.example.com
 ```
 
-I also had issues with images and other assets not loading properly, so I had to have Rails serve them:
+I had issues with images and other assets not loading properly, so I had to have Rails serve them:
 
 ```
 RAILS_SERVE_STATIC_FILES=true
 ```
 
-I enabled Elasticsearch (well, OpenSearch):
+I also enabled Elasticsearch (well, OpenSearch):
 
 ```
 ES_ENABLED=true
 ES_HOST=localhost
 ES_PORT=9200
-```
-
-And finally I increased the database pool size (more on this later):
-
-```
-DB_POOL=20
 ```
 
 ### Create the Elasticsearch indices
@@ -238,19 +232,9 @@ Because I wanted to host my server in a subdomain, but didn't want that subdomai
 
 Meanwhile, the `social.example.com` subdomain that would actually host the web interface, its configuration file is [here](com.example.social.conf). I commented out configuration details that were in the [official nginx configuration file](https://github.com/mastodon/mastodon/blob/main/dist/nginx.conf) that I either couldn't find an corresponding configuration command for in httpd, or they were configuration details that didn't appear to be needed. Update the domain name, certificate file locations, and Mastodon repository location and deploy it to wherever you keep your `httpd` config files; my Homebrew installation has them in `/opt/homebrew/etc/httpd/sites`.
 
-### In case media uploads fail...
-
-At some point I realized I could no longer upload any media because the Mastodon server couldn't find the ImageMagick tools. I had to add this line in the `config/environments/production.rb` file:
-
-```
-Paperclip.options[:command_path] = "/opt/homebrew/bin/"
-```
-
-It'd be nicer if there's a better way of specifying the path. I had my path configured correctly in my user environment, but for some reason Mastodon was using a different path of its own?
-
 ### Database tweaks
 
-I increased the `DB_POOL` size to 20 in the `.env.production` file (now that I think of it, I could probably just increase the one sidekiq task from 5 to 20 in the and leave the rest as-is) when I was getting a lot of 500 errors from the Mastodon server when attempting to import my followers list. I also updated the `/opt/homebrew/var/postgresql@14/postgresql.conf` file to tune the database server to better suit my hardware using [PGTune](https://pgtune.leopard.in.ua) (I could probably increase the total RAM, but I figured I'd start with this setup for now and see how it runs):
+I updated the `/opt/homebrew/var/postgresql@14/postgresql.conf` file to tune the database server to better suit my hardware using [PGTune](https://pgtune.leopard.in.ua) (I could probably increase the total RAM, but I figured I'd start with this setup for now and see how it runs):
 
 ```
 # DB Version: 14
@@ -313,3 +297,5 @@ brew services start supervisor
 ```
 
 Now you should be able to use Ivory or your Mastodon client of choice to connect to your example.com instance, and access it on the web at social.example.com! The only issue I can seem to find at the moment is that when I list another account on my same instance on my profile, if I try to access that other account in my client I get a "User not found" error but I can't figure out if it's something with the API URLs or something with the client or what, as it seems to think the instance should be social.example.com. But other than that, things seem to work well! Hope this helps!
+
+*(README documentation © Glenn Fitzpatrick; code snippets and all other associated files released under the Unlicense license.)*
