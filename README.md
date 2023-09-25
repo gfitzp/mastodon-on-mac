@@ -238,16 +238,6 @@ Because I wanted to host my server in a subdomain, but didn't want that subdomai
 
 Meanwhile, the `social.example.com` subdomain that would actually host the web interface, its configuration file is [here](com.example.social.conf). I commented out configuration details that were in the [official nginx configuration file](https://github.com/mastodon/mastodon/blob/main/dist/nginx.conf) that I either couldn't find an corresponding configuration command for in httpd, or they were configuration details that didn't appear to be needed. Update the domain name, certificate file locations, and Mastodon repository location and deploy it to wherever you keep your `httpd` config files; my Homebrew installation has them in `/opt/homebrew/etc/httpd/sites`.
 
-### In case media uploads fail...
-
-At some point I realized I could no longer upload any media because the Mastodon server couldn't find the ImageMagick tools. I had to add this line in the `config/environments/production.rb` file:
-
-```
-Paperclip.options[:command_path] = "/opt/homebrew/bin/"
-```
-
-It'd be nicer if there's a better way of specifying the path. I had my path configured correctly in my user environment, but for some reason Mastodon was using a different path of its own?
-
 ### Database tweaks
 
 I increased the `DB_POOL` size to 20 in the `.env.production` file (now that I think of it, I could probably just increase the one sidekiq task from 5 to 20 in the and leave the rest as-is) when I was getting a lot of 500 errors from the Mastodon server when attempting to import my followers list. I also updated the `/opt/homebrew/var/postgresql@14/postgresql.conf` file to tune the database server to better suit my hardware using [PGTune](https://pgtune.leopard.in.ua) (I could probably increase the total RAM, but I figured I'd start with this setup for now and see how it runs):
