@@ -153,30 +153,24 @@ SMTP_SSL=true
 SMTP_CA_FILE=/opt/homebrew/etc/openssl@3/cert.pem
 ```
 
-I also already had my site running on my main domain and wanted to host Mastodon on a subdomain:
+I already had my site running on my main domain and wanted to host Mastodon on a subdomain:
 
 ```
 WEB_DOMAIN=social.example.com
 ```
 
-I also had issues with images and other assets not loading properly, so I had to have Rails serve them:
+I had issues with images and other assets not loading properly, so I had to have Rails serve them:
 
 ```
 RAILS_SERVE_STATIC_FILES=true
 ```
 
-I enabled Elasticsearch (well, OpenSearch):
+I also enabled Elasticsearch (well, OpenSearch):
 
 ```
 ES_ENABLED=true
 ES_HOST=localhost
 ES_PORT=9200
-```
-
-And finally I increased the database pool size (more on this later):
-
-```
-DB_POOL=20
 ```
 
 ### Create the Elasticsearch indices
@@ -240,7 +234,7 @@ Meanwhile, the `social.example.com` subdomain that would actually host the web i
 
 ### Database tweaks
 
-I increased the `DB_POOL` size to 20 in the `.env.production` file (now that I think of it, I could probably just increase the one sidekiq task from 5 to 20 in the and leave the rest as-is) when I was getting a lot of 500 errors from the Mastodon server when attempting to import my followers list. I also updated the `/opt/homebrew/var/postgresql@14/postgresql.conf` file to tune the database server to better suit my hardware using [PGTune](https://pgtune.leopard.in.ua) (I could probably increase the total RAM, but I figured I'd start with this setup for now and see how it runs):
+I updated the `/opt/homebrew/var/postgresql@14/postgresql.conf` file to tune the database server to better suit my hardware using [PGTune](https://pgtune.leopard.in.ua) (I could probably increase the total RAM, but I figured I'd start with this setup for now and see how it runs):
 
 ```
 # DB Version: 14
