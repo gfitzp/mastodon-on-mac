@@ -173,6 +173,12 @@ ES_HOST=localhost
 ES_PORT=9200
 ```
 
+Finally I updated the number of connections available in the database pool:
+
+```
+DB_POOL=150
+```
+
 ### Create the Elasticsearch indices
 
 I had to first comment out the `progress.total = indices.sum { |index| importers[index].estimate! }` line due to a progress bar error (see [#18625](https://github.com/mastodon/mastodon/issues/18625)).
