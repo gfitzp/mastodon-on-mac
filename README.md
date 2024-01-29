@@ -330,6 +330,8 @@ Precompile assets:
 RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
 ```
 
+If upgrading ruby, don't forget to update the ruby path in the mastodon.ini file used by supervisord!
+
 Start Mastodon:
 
 ```
