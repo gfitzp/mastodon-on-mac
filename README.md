@@ -310,10 +310,10 @@ First stop all Mastodon processes:
 supervisorctl stop mastodon:*
 ```
 
-Dump the existing database:
+Backup the existing database:
 
 ```
-pg_dumpall > db_dump_file
+pg_dumpall > db_backup_file
 ```
 
 Download the latest version (in this case, 4.2.2):
