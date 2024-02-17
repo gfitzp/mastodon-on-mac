@@ -181,7 +181,7 @@ DB_POOL=150
 
 ### Create the Elasticsearch indices
 
-I had to first comment out the `progress.total = indices.sum { |index| importers[index].estimate! }` line due to a progress bar error (see [#18625](https://github.com/mastodon/mastodon/issues/18625)).
+~~I had to first comment out the `progress.total = indices.sum { |index| importers[index].estimate! }` line due to a progress bar error (see [#18625](https://github.com/mastodon/mastodon/issues/18625)).~~ This workaround no longer appears to be needed.
 
 ```
 RAILS_ENV=production bin/tootctl search deploy
