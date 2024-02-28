@@ -344,6 +344,21 @@ Start Mastodon:
 supervisorctl start mastodon:*
 ```
 
-Now you should be able to use Ivory or your Mastodon client of choice to connect to your example.com instance, and access it on the web at social.example.com! The only issue I can seem to find at the moment is that when I list another account on my same instance on my profile, if I try to access that other account in my client I get a "User not found" error but I can't figure out if it's something with the API URLs or something with the client or what, as it seems to think the instance should be social.example.com. But other than that, things seem to work well! Hope this helps!
+Now you should be able to use Ivory or your Mastodon client of choice to connect to your example.com instance, and access it on the web at social.example.com! The only issue I can seem to find at the moment is that when I list another account on my same instance on my profile, if I try to access that other account in my client I get a "User not found" error but I can't figure out if it's something with the API URLs or something with the client or what, as it seems to think the instance should be social.example.com. But other than that, things seem to work well!
+
+If for some reason the puma service fails to start after other brew upgrades, try deleting the `bundle` directory under `vendor` and recompile:
+
+```
+corepack enable
+yarn set version classic
+gem install bundler --no-document
+bundle config deployment 'true'
+bundle config without 'development test'
+bundle install -j$(getconf _NPROCESSORS_ONLN)
+yarn install --pure-lockfile
+RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+```
+
+Hope this helps!
 
 *(README documentation © Glenn Fitzpatrick; code snippets and all other associated files released under the Unlicense license.)*
