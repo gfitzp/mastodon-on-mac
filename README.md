@@ -228,7 +228,7 @@ Because I wanted to host my server in a subdomain, but didn't want that subdomai
 
   <Location "/oauth/authorize">
     RewriteEngine On
-    RewriteRule .* https://social.glennfitzpatrick.com%{REQUEST_URI} [R=301,L]
+    RewriteRule .* https://social.example.com%{REQUEST_URI} [R=301,L]
     Header append Access-Control-Allow-Origin '*'
   </Location>
 
