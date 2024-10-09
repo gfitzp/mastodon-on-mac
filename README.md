@@ -359,6 +359,21 @@ yarn install --pure-lockfile
 RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
 ```
 
+For upgrading to v4.3.0, I kept having issues with yarn and ruby (I had upgraded ruby to 3.3.5, and also upgraded postgresql to v17), and ultimately had to do the following:
+
+```
+git fetch && git checkout v4.3.0
+export LDFLAGS="-L/opt/homebrew/opt/libpq/lib" CPPFLAGS="-I/opt/homebrew/opt/libpq/include" PKG_CONFIG_PATH="/opt/homebrew/opt/libpq/lib/pkgconfig"
+corepack enable
+corepack prepare
+gem install bundler --no-document
+bundle config deployment 'true'
+bundle config without 'development test'
+bundle install -j$(getconf _NPROCESSORS_ONLN)
+yarn install --immutable
+RAILS_ENV=production NODE_OPTIONS=--openssl-legacy-provider bundle exec rails assets:precompile
+```
+
 Hope this helps!
 
 *(README documentation © Glenn Fitzpatrick; code snippets and all other associated files released under the Unlicense license.)*
