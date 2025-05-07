@@ -327,7 +327,7 @@ Install the latest version:
 
 ```
 bundle install
-yarn install --frozen-lockfile
+yarn install --immutable
 ```
 
 Precompile assets:
