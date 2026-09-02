@@ -383,7 +383,17 @@ RAILS_ENV=production PGGSSENCMODE=disable bin/tootctl search deploy
 
 ## Upgrading Mastodon
 
-Always read the release notes first; some versions need extra steps. Then, from the Mastodon directory:
+Always read the release notes first; some versions need extra steps. Stop Mastodon and back up the database before touching anything:
+
+```bash
+supervisorctl stop mastodon:*
+```
+
+```bash
+pg_dump -Fc mastodon_production > ~/mastodon_$(date +%Y%m%d).dump
+```
+
+Then, from the Mastodon directory:
 
 ```bash
 git fetch --tags
@@ -392,8 +402,10 @@ bundle install
 yarn install --immutable
 RAILS_ENV=production PGGSSENCMODE=disable bin/rails db:migrate
 RAILS_ENV=production bin/rails assets:precompile
-supervisorctl restart mastodon:*
+supervisorctl start mastodon:*
 ```
+
+If Puma refuses to start after an unrelated `brew upgrade` (a new OpenSSL or ICU, say), the native gems were built against libraries that no longer exist. Delete `vendor/bundle` and run `bundle install` again.
 
 If a release moves `.ruby-version` to a Ruby that Homebrew's pinned `ruby` doesn't provide, `brew unpin ruby && brew upgrade ruby`, then rebuild the gems with `bundle install`. Likewise for `.nvmrc` and `node@24`.
 
